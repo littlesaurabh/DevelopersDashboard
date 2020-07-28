@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {STEPPER_GLOBAL_OPTIONS} from '@angular/cdk/stepper';
 import { HttpClient } from '@angular/common/http';
+import { async } from '@angular/core/testing';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -20,6 +21,8 @@ export class DashboardComponent implements OnInit {
   test:any;
   Name
   data
+  stock
+  stockl
   firstFormGroup: FormGroup;
   secondFormGroup: FormGroup;
   location:any={
@@ -50,6 +53,14 @@ totalrecovered:""
     }, 1000);
   }
   ngOnInit(): void {
+  navigator.geolocation.getCurrentPosition(resp => {
+      this.location.latitude= resp.coords.latitude
+      this.location.longitude=resp.coords.longitude
+      // console.log(resp.coords.longitude, resp.coords.latitude)
+    },
+    err => {
+     console.log(err)
+    });
     // this.firstFormGroup = this._formBuilder.group({
     //   firstCtrl: ['', Validators.required]
     // });
@@ -71,14 +82,7 @@ this.today = mm + '/' + dd + '/' + yyyy;
   if (navigator.appVersion.indexOf("Linux") != -1) this.Name =  
     "Linux OS"; 
     // console.log(this.Name)
-    navigator.geolocation.getCurrentPosition(resp => {
-      this.location.latitude= resp.coords.latitude
-      this.location.longitude=resp.coords.longitude
-      // console.log(resp.coords.longitude, resp.coords.latitude)
-    },
-    err => {
-     console.log(err)
-    });
+
 
     this.http.get("https://api.covid19india.org/data.json").subscribe(
       (success)=>{
@@ -94,20 +98,7 @@ this.today = mm + '/' + dd + '/' + yyyy;
       },
     (err)=>{err.message}
     )
-    this.http.get("http://apis.mapmyindia.com/advancedmaps/v1/<licence_key>/rev_geocode?lat="+this.location.latitude+"&lng="+this.location.longitude).subscribe(
-      (success)=>{
-        // console.log(success)
-        this.data=success
-        var len=this.data.cases_time_series.length
-        // console.log(this.data.cases_time_series[len-1])
-        this.Corona.totalconfirmed=this.data.cases_time_series[len-1].totalconfirmed
-        this.Corona.totalrecovered=this.data.cases_time_series[len-1].totalrecovered
-        this.Corona.totaldeceased=this.data.cases_time_series[len-1].totaldeceased
-
-    
-      },
-    (err)=>{err.message}
-    )
+   
     this.newsSpinner=false
     this.http.get("https://newsapi.org/v2/top-headlines?country=us&apiKey=7700242c24534d0092ff0bf9256cdc38"+this.location.latitude+"&lng="+this.location.longitude).subscribe(
       (success)=>{
@@ -132,13 +123,55 @@ this.today = mm + '/' + dd + '/' + yyyy;
     (err)=>{err.message
     console.log(err)}
     )
+    this.http.get("http://localhost:3001/nse/get_gainers").subscribe(
+      (success)=>{
+   
+        this.stock=success
+        this.stock=this.stock.data
+        console.log(this.stock)
     
+      },
+    (err)=>{err.message}
+    )
+    this.http.get("http://localhost:3001/nse/get_losers").subscribe(
+      (success)=>{
+   
+        this.stockl=success
+        this.stockl=this.stockl.data
+        console.log(this.stockl)
+    
+      },
+    (err)=>{err.message}
+    )
+   
   }
   // var el_up = document.e("GFG_UP"); 
   // var el_down = document.e("GFG_DOWN"); 
   // el_up.innerHTML = "Click on the button to get the OS of User's System."; 
   // var Name = "Not known"; 
 
-
- 
+  // "symbol": "HCLTECH",
+  // "series": "EQ",
+  // "openPrice": "641.00",
+  // "highPrice": "684.80",
+  // "lowPrice": "640.90",
+  // "ltp": "683.50",
+  // "previousPrice": "652.85",
+  // "netPrice": "4.69",
+  // "tradedQuantity": "1,23,65,729",
+  // "turnoverInLakhs": "82,324.84",
+  // "lastCorpAnnouncementDate": "23-Jul-2020",
+  // "lastCorpAnnouncement": "Interim Dividend - Rs 2 Per Share"
+ getLocation(){
+  if(this.location.latitude)
+  this.http.get("http://localhost:3004/location/"+this.location.latitude+"/"+this.location.longitude).subscribe(
+    (success)=>{
+      console.log(success)
+      this.data=success
+   
+  
+    },
+  (err)=>{err.message}
+  )
+ }
 }

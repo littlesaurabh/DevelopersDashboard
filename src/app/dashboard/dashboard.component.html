@@ -9,9 +9,9 @@
   
 
 
-      <div class="col-md-2 offset-md-1">
+      <div class="col-md-2">
       
-        <div class="card h-100">
+        <div class="card ">
           <div class="card-header">
             OS Name:
           </div>
@@ -22,32 +22,38 @@
             </div>
         </div>
     </div>
-        <div class="col-md-2 offset-md-1">
-            <div class="card h-100">
+        <div class="col-md-2">
+            <div class="card ">
               <div class="card-header">
                Time:
               </div>
                 <div class="card-body  bg-dark text-light text-center clock">
                     
     <span class="time">{{date}}</span>
+    <div class="time pt-2">{{today}}</div>
 
                 </div>
             </div>
         </div>
-        <div class="col-md-2 offset-md-1">
-            <div class="card h-100">
+        <div class="col-md-2">
+            <div class="card ">
               <div class="card-header ">
                 Location:
               </div>
                 <div class="card-body bg-dark text-light text-center clock">
                     
-    <span class="time" *ngIf="location">{{location.latitude}},{{location.longitude}}</span>
+    <span class="time" *ngIf="location"></span>
+<div class="text-center pt-2">
+  <button class="btn btn-primary font-weight-bold" (click)="getLocation()"><span class="material-icons">
+    gps_fixed
+    </span>Get Location</button> 
+</div>
 
                 </div>
             </div>
         </div>
-        <div class="col-md-2 offset-md-1">
-            <div class="card h-100">
+        <div class="col-md-2 ">
+            <div class="card">
               <div class="card-header ">
                 Covid in India Updates:
               </div>
@@ -77,6 +83,73 @@
                 </div>
             </div>
         </div>
+        <div class="col-md-2">
+      
+          <div class="card ">
+            <div class="card-header">
+              Top Gainers NSE 
+            </div>
+              <div class="card-body bg-dark text-light text-center clock">
+                  
+  <div class="text-center" *ngIf="stock">
+    <table >
+      <thead>
+        <tr>
+          <th>Company</th>
+          <th>Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr  *ngFor="let i of stock">
+         <td class="text-success">
+           {{i.symbol}}
+         </td>
+         <td class="text-success">
+           {{i.ltp}}
+         </td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+  
+              </div>
+          </div>
+      </div>
+        <div class="col-md-2">
+      
+          <div class="card ">
+            <div class="card-header">
+              Top Losers NSE 
+            </div>
+              <div class="card-body bg-dark text-light text-center clock">
+                  
+  <div class="text-center" *ngIf="stock">
+    <table>
+      <thead>
+        <tr>
+          <th>Company</th>
+          <th>Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr  *ngFor="let i of stockl">
+         <td class="text-danger">
+           {{i.symbol}}
+         </td>
+         <td class="text-danger">
+           {{i.ltp}}
+         </td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+  
+              </div>
+          </div>
+      </div>
+    
         
     </div>
     <div class="row">

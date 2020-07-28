@@ -11,6 +11,27 @@
   <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
     <mat-icon>share</mat-icon>
   </button>
+  <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+    <mat-icon>more_vert</mat-icon>
+  </button>
+<div style="float: right;">
+  <mat-menu #menu="matMenu" >
+    <button mat-menu-item>
+      <mat-icon>React</mat-icon>
+      <a href="https://reactjs.org/docs/hooks-overview.html"></a>
+      <span>React</span>
+    </button>
+    <button mat-menu-item disabled>
+      <mat-icon>Angular</mat-icon>
+      <span>Angular</span>
+    </button>
+    <button mat-menu-item>
+      <mat-icon>notifications_off</mat-icon>
+      <span>Disable alerts</span>
+    </button>
+  </mat-menu>
+</div>
+  
 </mat-toolbar>
 
 <router-outlet><router-outlet>
